@@ -3,6 +3,8 @@ using SteticToMauiConverter.Stetic;
 using System.Diagnostics;
 using System.Xml.Serialization;
 
+ComponentsFactory _componentsFactory = new();
+
 Console.WriteLine("Stetic to maui converter!");
 
 XmlRootAttribute steticRoot = new("stetic-interface");
@@ -17,11 +19,10 @@ SteticInterface source = ((SteticInterface?)xmSourceSerializer.Deserialize(fileS
 //PrintUniqueWidgetsClasses(source);
 //PrintIds(source);
 
-var componentsToGenerate = GetComponentsClassNames(source);
+var componentsToGenerate = source.GetComponentWidgets();
 Console.WriteLine("This components will be generated:");
-PrintStrings(componentsToGenerate);
+PrintStrings(componentsToGenerate.Select(w => w.Id)!);
 Console.WriteLine();
-
 
 XmlSerializerNamespaces ns = new XmlSerializerNamespaces();
 
@@ -32,18 +33,14 @@ XmlSerializer contentViewSerializer = new(typeof(ContentView));
 
 foreach (var component in componentsToGenerate)
 {
-    var objectForSerialization = new ContentView
-    {
-        Class = component
-    };
+    ContentView objectForSerialization = (ContentView)_componentsFactory.CreateComponent(component)!;
 
-    using FileStream outputFileStream = new($"{component}.xaml", FileMode.OpenOrCreate);
+    using FileStream outputFileStream = new($"{component.Id}.xaml", FileMode.Create);
 
     contentViewSerializer.Serialize(outputFileStream, objectForSerialization, ns);
 }
 
 Console.WriteLine("Done!");
-
 
 static void PrintStrings(IEnumerable<string> strings)
 {
@@ -51,14 +48,6 @@ static void PrintStrings(IEnumerable<string> strings)
     {
         Console.WriteLine(widgetClass);
     }
-}
-
-static IEnumerable<string> GetComponentsClassNames(SteticInterface steticInterface)
-{
-    return steticInterface.Widgets?.Where(w =>
-                w.Class == SteticToMauiConverter.Stetic.Constants.Classes.Widget)
-            .Select(w => w.Id ?? "")
-            ?? throw new InvalidOperationException("There is no widgets!!");
 }
 
 static void PrintIds(SteticInterface steticInterface)

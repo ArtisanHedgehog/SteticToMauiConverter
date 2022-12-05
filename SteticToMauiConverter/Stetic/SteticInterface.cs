@@ -19,4 +19,10 @@ public partial class SteticInterface
 
     [XmlElement("widget")]
     public Widget[]? Widgets { get; set; }
+
+    public IEnumerable<Widget> GetComponentWidgets()
+    {
+        return Widgets?.Where(w => w.Class == Constants.Classes.Widget)
+                ?? throw new InvalidOperationException("There is no widgets!!");
+    }
 }
