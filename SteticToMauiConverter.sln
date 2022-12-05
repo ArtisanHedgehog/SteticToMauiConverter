@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.4.33122.133
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SteticToMauiConverter", "SteticToMauiConverter\SteticToMauiConverter.csproj", "{A1DABA09-1724-4BFF-9622-B4A6EA42077D}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{A1DABA09-1724-4BFF-9622-B4A6EA42077D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A1DABA09-1724-4BFF-9622-B4A6EA42077D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A1DABA09-1724-4BFF-9622-B4A6EA42077D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A1DABA09-1724-4BFF-9622-B4A6EA42077D}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {CFC11804-D585-46D6-A279-43EBB96FD5BB}
+	EndGlobalSection
+EndGlobal
