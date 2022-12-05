@@ -16,9 +16,6 @@ using FileStream fileStream = new("gui.stetic", FileMode.Open);
 SteticInterface source = ((SteticInterface?)xmSourceSerializer.Deserialize(fileStream))
     ?? throw new InvalidOperationException("Unable to serialize stetic");
 
-//PrintUniqueWidgetsClasses(source);
-//PrintIds(source);
-
 var componentsToGenerate = source.GetComponentWidgets();
 Console.WriteLine("This components will be generated:");
 PrintStrings(componentsToGenerate.Select(w => w.Id)!);
@@ -50,25 +47,10 @@ static void PrintStrings(IEnumerable<string> strings)
     }
 }
 
-static void PrintIds(SteticInterface steticInterface)
-{
-    Console.WriteLine();
-    Console.WriteLine("Main widgets Ids:");
-    PrintStrings(GetMainWidgetsIds(steticInterface));
-}
-
 static IEnumerable<string> GetMainWidgetsIds(SteticInterface steticInterface)
 {
     return steticInterface.Widgets?.Select(w => w.Id ?? "")
         ?? throw new InvalidOperationException("There is no widgets!!");
-}
-
-[Conditional("DEBUG")]
-static void PrintUniqueWidgetsClasses(SteticInterface steticInterface)
-{
-    Console.WriteLine();
-    Console.WriteLine("Founded widgets classes:");
-    PrintStrings(GetUniqueClasses(steticInterface));
 }
 
 static IEnumerable<string> GetUniqueClasses(SteticInterface steticInterface)
