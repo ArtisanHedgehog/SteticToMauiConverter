@@ -1,21 +1,12 @@
-﻿using Microsoft.VisualBasic;
-using SteticToMauiConverter.Maui;
+﻿using SteticToMauiConverter.Maui;
 using SteticToMauiConverter.Stetic;
-using System.Diagnostics;
-using System.Xml.Serialization;
 
-ComponentsFactory _componentsFactory = new();
+SteticReader _steticReader = new();
+MauiXamlGenerator _mauiXamlGenerator = new();
 
 Console.WriteLine("Stetic to maui converter!");
 
-XmlRootAttribute steticRoot = new("stetic-interface");
-
-XmlSerializer xmSourceSerializer = new(typeof(SteticInterface), steticRoot);
-
-using FileStream fileStream = new("gui.stetic", FileMode.Open);
-
-SteticInterface source = ((SteticInterface?)xmSourceSerializer.Deserialize(fileStream))
-    ?? throw new InvalidOperationException("Unable to serialize stetic");
+var source = _steticReader.Read("gui.stetic");
 
 var componentsToGenerate = source.GetComponentWidgets();
 
@@ -28,20 +19,9 @@ foreach (var widgetClass in componentsToGenerate.Select(w => w.Id))
 
 Console.WriteLine();
 
-XmlSerializerNamespaces ns = new XmlSerializerNamespaces();
-
-ns.Add("", SteticToMauiConverter.Maui.Constants.Maui2021);
-ns.Add("x", SteticToMauiConverter.Maui.Constants.Maui2009);
-
-XmlSerializer contentViewSerializer = new(typeof(ContentView));
-
 foreach (var component in componentsToGenerate)
 {
-    ContentView objectForSerialization = (ContentView)_componentsFactory.CreateComponent(component)!;
-
-    using FileStream outputFileStream = new($"{component.Id}.xaml", FileMode.Create);
-
-    contentViewSerializer.Serialize(outputFileStream, objectForSerialization, ns);
+    _mauiXamlGenerator.Generate(component);
 }
 
 Console.WriteLine("Done!");
