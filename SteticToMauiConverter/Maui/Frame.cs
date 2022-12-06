@@ -1,6 +1,4 @@
 ﻿namespace SteticToMauiConverter.Maui;
-
-public abstract class UIComponent
+public class Frame : UIContainer
 {
-
 }

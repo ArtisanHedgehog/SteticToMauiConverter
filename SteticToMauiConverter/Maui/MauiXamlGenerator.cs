@@ -12,8 +12,8 @@ public class MauiXamlGenerator
 
     public MauiXamlGenerator()
     {
-        _namespaces.Add("", SteticToMauiConverter.Maui.Constants.Maui2021);
-        _namespaces.Add("x", SteticToMauiConverter.Maui.Constants.Maui2009);
+        _namespaces.Add("", Constants.Maui2021);
+        _namespaces.Add("x", Constants.Maui2009);
 
         _xmlSerializer = new(typeof(ContentView));
     }

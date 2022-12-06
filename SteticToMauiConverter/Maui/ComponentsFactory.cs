@@ -1,5 +1,5 @@
 ﻿using SteticToMauiConverter.Stetic;
-using System.ComponentModel;
+using System.Text.RegularExpressions;
 
 namespace SteticToMauiConverter.Maui;
 public class ComponentsFactory
@@ -18,11 +18,91 @@ public class ComponentsFactory
             },
             Stetic.Constants.Classes.Widget => new ContentView
             {
-                Class = widget.Id,
+                Class = widget.Id ?? string.Empty,
                 UIComponents = CreateInnerComponents(widget)
             },
+            Stetic.Constants.Classes.ScrolledWindow => new ScrollView
+            {
+                Name = widget.Id ?? string.Empty,
+                UIComponents = CreateInnerComponents(widget)
+            },
+            Stetic.Constants.Classes.Frame => new Frame
+            {
+                UIComponents = CreateInnerComponents(widget)
+            },
+            Stetic.Constants.Classes.Button => CreateButton(widget),
+            Stetic.Constants.Classes.Label => CreateLabel(widget),
+            Stetic.Constants.Classes.RadioButton => CreateRadioButton(widget),
+            Stetic.Constants.Classes.CheckButton => CreateCheckBox(widget),
             _ => null
         };
+    }
+
+    private CheckBox CreateCheckBox(Widget widget)
+    {
+        var checkBox = new CheckBox();
+        return checkBox;
+    }
+
+    public Button CreateButton(Widget widget)
+    {
+        var button = new Button();
+
+        var textProperty = widget.Properties?.FirstOrDefault(wc => wc.Name == "Label");
+
+        if (textProperty is not null)
+        {
+            button.Text = textProperty.Value;
+        }
+
+        var typeProperty = widget.Properties?.FirstOrDefault(wc => wc.Name == "Type");
+
+        if (typeProperty is not null)
+        {
+            switch (typeProperty.Value)
+            {
+                case "TextAndIcon":
+                    Console.WriteLine("[Warning!]: Buttons with images not implemented!");
+                    break;
+                case "TextOnly":
+                    break;
+            }
+        }
+
+        if(widget.Signal?.Name == "Clicked")
+        {
+            button.Clicked = widget.Signal?.Handler;
+        }
+
+        return button;
+    }
+
+    public Label CreateLabel(Widget widget)
+    {
+        var label = new Label();
+
+        var textProperty = widget.Properties?.FirstOrDefault(wc => wc.Name == "LabelProp");
+
+        if (textProperty is not null)
+        {
+            label.Text = textProperty.Value ?? string.Empty;
+        }
+
+        return label;
+    }
+
+    public RadioButton CreateRadioButton(Widget widget)
+    {
+        var radioButton = new RadioButton();
+
+        var groupNameProperty = widget.Properties?.FirstOrDefault(wc => wc.Name == "Group");
+
+        if(groupNameProperty is not null)
+        {
+            radioButton.GroupName = groupNameProperty.Value;
+        }
+        
+        return radioButton;
     }
 
     public UIComponent[] CreateInnerComponents(Widget Widget)
