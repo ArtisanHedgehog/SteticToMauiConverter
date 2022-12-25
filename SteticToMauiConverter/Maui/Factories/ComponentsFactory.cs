@@ -8,13 +8,16 @@ public class ComponentsFactory
 {
     private readonly ILogger<ComponentsFactory> _logger;
     private readonly ButtonsFactory _buttonsFactory;
+    private readonly LabelsFactory _labelsFactory;
 
     public ComponentsFactory(
         ILogger<ComponentsFactory> logger,
-        ButtonsFactory buttonsFactory)
+        ButtonsFactory buttonsFactory,
+        LabelsFactory labelsFactory)
     {
         _logger = logger;
         _buttonsFactory = buttonsFactory;
+        _labelsFactory = labelsFactory;
     }
 
     public UIComponent? CreateComponent(Widget widget)
@@ -44,11 +47,22 @@ public class ComponentsFactory
                 UIComponents = CreateInnerComponents(widget)
             },
             Constants.Classes.Button => _buttonsFactory.CreateButton(widget),
-            Constants.Classes.Label => CreateLabel(widget),
-            Constants.Classes.RadioButton => CreateRadioButton(widget),
+            Constants.Classes.Label => _labelsFactory.CreateLabel(widget),
+            Constants.Classes.RadioButton => _buttonsFactory.CreateRadioButton(widget),
             Constants.Classes.CheckButton => CreateCheckBox(widget),
+            Constants.Classes.ProgressBar => CreateProgressBar(widget),
+            Constants.ExternalWidgets.Label => _labelsFactory.CreateLabel(widget),
+            Constants.ExternalWidgets.CheckButton => CreateCheckBox(widget),
+            Constants.ExternalWidgets.ProgressBar => CreateProgressBar(widget),
             _ => null
         };
+    }
+
+    private ProgressBar CreateProgressBar(Widget widget)
+    {
+        var progressBar = new ProgressBar();
+
+        return progressBar;
     }
 
     private CheckBox CreateCheckBox(Widget widget)
@@ -86,86 +100,6 @@ public class ComponentsFactory
         }
 
         return checkBox;
-    }
-
-    public Label CreateLabel(Widget widget)
-    {
-        var label = new Label();
-
-        if (widget.Properties is null)
-        {
-            return label;
-        }
-
-        foreach (var property in widget.Properties)
-        {
-            switch (property.Name)
-            {
-                case "LabelProp":
-                    label.Text = property.Value ?? string.Empty;
-                    break;
-                default:
-                    _logger.LogWarning("Property {Property} is not supported", property.Name);
-                    break;
-            }
-        }
-
-        if (widget.Signals is null)
-        {
-            return label;
-        }
-
-        foreach (var signal in widget.Signals)
-        {
-            switch (signal.Name)
-            {
-                default:
-                    _logger.LogWarning("Signal {Signal} is not supported", signal.Name);
-                    break;
-            }
-        }
-
-        return label;
-    }
-
-    public RadioButton CreateRadioButton(Widget widget)
-    {
-        var radioButton = new RadioButton();
-
-        if (widget.Properties is null)
-        {
-            return radioButton;
-        }
-
-        foreach (var property in widget.Properties)
-        {
-            switch (property.Name)
-            {
-                case "Group":
-                    radioButton.GroupName = property.Value;
-                    break;
-                default:
-                    _logger.LogWarning("Property {Property} is not supported", property.Name);
-                    break;
-            }
-        }
-
-        if (widget.Signals is null)
-        {
-            return radioButton;
-        }
-
-        foreach (var signal in widget.Signals)
-        {
-            switch (signal.Name)
-            {
-                default:
-                    _logger.LogWarning("Signal {Signal} is not supported", signal.Name);
-                    break;
-            }
-        }
-
-        return radioButton;
     }
 
     public UIComponent[] CreateInnerComponents(Widget Widget)

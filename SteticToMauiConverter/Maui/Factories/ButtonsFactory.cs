@@ -29,16 +29,23 @@ public class ButtonsFactory
                 case "Label":
                     button.Text = property.Value;
                     break;
+                case "Tooltip":
+                    button.Tooltip = property.Value;
+                    break;
+                case "UseUnderline": // Gtk uses it for enable mnemonic characters
+                case "MemberName": // Unused property
+                case "CanFocus": // Unused property
+                    break;
                 case "Type":
-                    if (property.Value == "TextAndIcon")
-                    {
-                        _logger.LogWarning("Buttons with images not implemented!");
-                    }
-                    else if (property.Value == "TextOnly") { }
+                    if (property.Value == "TextAndIcon" || property.Value == "TextOnly")
+                    { }
                     else
                     {
                         _logger.LogWarning("Type {Type} is not supported", property.Value);
                     }
+                    break;
+                case "Icon":
+                    _logger.LogWarning("Icons conversion is not implemented!");
                     break;
                 default:
                     _logger.LogWarning("Property {Property} is not supported", property.Name);
@@ -65,5 +72,50 @@ public class ButtonsFactory
         }
 
         return button;
+    }
+
+    public RadioButton CreateRadioButton(Widget widget)
+    {
+        var radioButton = new RadioButton();
+
+        if (widget.Properties is null)
+        {
+            return radioButton;
+        }
+
+        foreach (var property in widget.Properties)
+        {
+            switch (property.Name)
+            {
+                case "Group":
+                    radioButton.GroupName = property.Value;
+                    break;
+                case "Active":
+                    radioButton.IsChecked = true;
+                    break;
+                case "CanFocus": // Unused property
+                    break;
+                default:
+                    _logger.LogWarning("Property {Property} is not supported", property.Name);
+                    break;
+            }
+        }
+
+        if (widget.Signals is null)
+        {
+            return radioButton;
+        }
+
+        foreach (var signal in widget.Signals)
+        {
+            switch (signal.Name)
+            {
+                default:
+                    _logger.LogWarning("Signal {Signal} is not supported", signal.Name);
+                    break;
+            }
+        }
+
+        return radioButton;
     }
 }

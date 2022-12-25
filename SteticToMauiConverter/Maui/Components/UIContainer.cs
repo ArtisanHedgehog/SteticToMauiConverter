@@ -11,5 +11,7 @@ public class UIContainer : UIComponent
     [XmlElement(typeof(Button), ElementName = nameof(Button))]
     [XmlElement(typeof(RadioButton), ElementName = nameof(RadioButton))]
     [XmlElement(typeof(CheckBox), ElementName = nameof(CheckBox))]
+    [XmlElement(typeof(ProgressBar), ElementName = nameof(ProgressBar))]
+    [XmlElement(typeof(Entry), ElementName = nameof(Entry))]
     public UIComponent[]? UIComponents { get; set; }
 }

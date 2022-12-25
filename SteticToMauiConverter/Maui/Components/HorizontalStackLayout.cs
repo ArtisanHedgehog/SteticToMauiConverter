@@ -1,6 +1,6 @@
-﻿using System.Xml.Serialization;
+﻿namespace SteticToMauiConverter.Maui.Components;
+using System.Xml.Serialization;
 
-namespace SteticToMauiConverter.Maui.Components;
 public class HorizontalStackLayout : UIContainer
 {
 }

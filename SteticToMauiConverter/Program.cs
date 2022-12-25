@@ -19,6 +19,7 @@ var hostBuilder = new HostBuilder()
         services.AddSingleton<SteticReader>();
         services.AddSingleton<MauiXamlGenerator>();
         services.AddSingleton<ButtonsFactory>();
+        services.AddSingleton<LabelsFactory>();
         services.AddSingleton<ComponentsFactory>();
 
         services.Configure<ApplicationOptions>(
@@ -31,8 +32,19 @@ var hostBuilder = new HostBuilder()
 
 var host = hostBuilder.Build();
 
-var app = host.Services.GetService<Application>()
-    ?? throw new InvalidOperationException(
-        $"Configuration missing for {nameof(Application)} service");
 
-app.Run();
+var logger = host.Services.GetService<ILogger<Program>>()
+    ?? throw new InvalidOperationException("Can't get logger");
+
+try
+{
+    var app = host.Services.GetService<Application>()
+    ?? throw new InvalidOperationException(
+    $"Configuration missing for {nameof(Application)} service");
+
+    app.Run();
+}
+catch(Exception ex)
+{
+    logger.LogCritical(ex.Message);
+}

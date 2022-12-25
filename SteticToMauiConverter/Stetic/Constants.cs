@@ -15,5 +15,13 @@ public static class Constants
         public const string Label = "Gtk.Label";
         public const string RadioButton = "Gtk.RadioButton";
         public const string CheckButton = "Gtk.CheckButton";
+        public const string ProgressBar = "Gtk.ProgressBar";
+    }
+
+    public static class ExternalWidgets
+    {
+        public const string ProgressBar = "Gamma.GtkWidgets.yProgressBar";
+        public const string Label = "Gamma.GtkWidgets.yLabel";
+        public const string CheckButton = "Gamma.GtkWidgets.yCheckButton";
     }
 }
