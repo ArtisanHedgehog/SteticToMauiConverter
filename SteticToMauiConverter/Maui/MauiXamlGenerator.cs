@@ -1,9 +1,10 @@
 ﻿using SteticToMauiConverter.Maui.Components;
 using SteticToMauiConverter.Maui.Factories;
 using SteticToMauiConverter.Stetic;
+namespace SteticToMauiConverter.Maui;
+
 using System.Xml.Serialization;
 
-namespace SteticToMauiConverter.Maui;
 public class MauiXamlGenerator
 {
     private readonly ComponentsFactory _componentsFactory;

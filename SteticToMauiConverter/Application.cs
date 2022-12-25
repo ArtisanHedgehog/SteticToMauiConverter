@@ -1,12 +1,11 @@
-﻿using Microsoft.Extensions.Logging;
+﻿namespace SteticToMauiConverter;
+
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using Microsoft.Extensions.Primitives;
 using SteticToMauiConverter.Configuration;
 using SteticToMauiConverter.Maui;
 using SteticToMauiConverter.Stetic;
 using System.Text;
-
-namespace SteticToMauiConverter;
 
 public class Application
 {
