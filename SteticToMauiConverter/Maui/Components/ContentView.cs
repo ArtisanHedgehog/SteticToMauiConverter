@@ -1,6 +1,6 @@
 ﻿using System.Xml.Serialization;
 
-namespace SteticToMauiConverter.Maui;
+namespace SteticToMauiConverter.Maui.Components;
 
 [XmlRoot(Namespace = Constants.Maui2021)]
 public class ContentView : UIContainer

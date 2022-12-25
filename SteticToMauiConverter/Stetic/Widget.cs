@@ -2,7 +2,6 @@
 
 namespace SteticToMauiConverter.Stetic;
 
-/// <remarks/>
 [Serializable()]
 [XmlType(AnonymousType = true)]
 public partial class Widget
@@ -14,7 +13,7 @@ public partial class Widget
     public WidgetProperty[]? Properties { get; set; }
 
     [XmlElement("signal")]
-    public WidgetSignal? Signal { get; set; }
+    public WidgetSignal[]? Signals { get; set; }
 
     [XmlElement("child")]
     public WidgetChild[]? Childs { get; set; }

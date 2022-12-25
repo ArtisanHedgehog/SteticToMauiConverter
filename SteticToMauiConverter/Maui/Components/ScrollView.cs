@@ -1,6 +1,6 @@
 ﻿using System.Xml.Serialization;
 
-namespace SteticToMauiConverter.Maui;
+namespace SteticToMauiConverter.Maui.Components;
 public class ScrollView : UIContainer
 {
     [XmlAttribute]

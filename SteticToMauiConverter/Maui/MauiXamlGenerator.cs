@@ -1,21 +1,23 @@
-﻿using SteticToMauiConverter.Stetic;
+﻿using SteticToMauiConverter.Maui.Components;
+using SteticToMauiConverter.Maui.Factories;
+using SteticToMauiConverter.Stetic;
 using System.Xml.Serialization;
 
 namespace SteticToMauiConverter.Maui;
 public class MauiXamlGenerator
 {
-    private readonly XmlSerializerNamespaces _namespaces = new();
-
+    private readonly ComponentsFactory _componentsFactory;
+    private readonly XmlSerializerNamespaces _namespaces;
     private readonly XmlSerializer _xmlSerializer;
 
-    private readonly ComponentsFactory _componentsFactory = new();
-
-    public MauiXamlGenerator()
+    public MauiXamlGenerator(ComponentsFactory componentsFactory)
     {
+        _namespaces = new();
         _namespaces.Add("", Constants.Maui2021);
         _namespaces.Add("x", Constants.Maui2009);
 
         _xmlSerializer = new(typeof(ContentView));
+        _componentsFactory = componentsFactory;
     }
 
     public void Generate(Widget widget)

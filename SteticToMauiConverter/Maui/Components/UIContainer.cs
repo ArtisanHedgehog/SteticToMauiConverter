@@ -1,6 +1,6 @@
 ﻿using System.Xml.Serialization;
 
-namespace SteticToMauiConverter.Maui;
+namespace SteticToMauiConverter.Maui.Components;
 public class UIContainer : UIComponent
 {
     [XmlElement(typeof(VerticalStackLayout), ElementName = nameof(VerticalStackLayout))]

@@ -1,27 +1,38 @@
-﻿using SteticToMauiConverter.Maui;
+﻿using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
+using SteticToMauiConverter;
+using SteticToMauiConverter.Configuration;
+using SteticToMauiConverter.Maui;
+using SteticToMauiConverter.Maui.Factories;
 using SteticToMauiConverter.Stetic;
 
-SteticReader _steticReader = new();
-MauiXamlGenerator _mauiXamlGenerator = new();
+var hostBuilder = new HostBuilder()
+    .ConfigureAppConfiguration((hostingContext, config) =>
+    {
+        config.AddJsonFile("appsettings.json");
+    })
+    .ConfigureServices((hostingContext, services) =>
+    {
+        services.AddSingleton<Application>();
+        services.AddSingleton<SteticReader>();
+        services.AddSingleton<MauiXamlGenerator>();
+        services.AddSingleton<ButtonsFactory>();
+        services.AddSingleton<ComponentsFactory>();
 
-Console.WriteLine("Stetic to maui converter!");
+        services.Configure<ApplicationOptions>(
+            hostingContext.Configuration.GetSection(nameof(ApplicationOptions)));
+    })
+    .ConfigureLogging((hostContext, logging) =>
+    {
+        logging.AddConsole();
+    });
 
-var source = _steticReader.Read("gui.stetic");
+var host = hostBuilder.Build();
 
-var componentsToGenerate = source.GetComponentWidgets();
+var app = host.Services.GetService<Application>()
+    ?? throw new InvalidOperationException(
+        $"Configuration missing for {nameof(Application)} service");
 
-Console.WriteLine("This components will be generated:");
-
-foreach (var widgetClass in componentsToGenerate.Select(w => w.Id))
-{
-    Console.WriteLine(widgetClass);
-}
-
-Console.WriteLine();
-
-foreach (var component in componentsToGenerate)
-{
-    _mauiXamlGenerator.Generate(component);
-}
-
-Console.WriteLine("Done!");
+app.Run();
