@@ -51,6 +51,7 @@ public class ComponentsFactory
             Constants.Classes.RadioButton => _buttonsFactory.CreateRadioButton(widget),
             Constants.Classes.CheckButton => CreateCheckBox(widget),
             Constants.Classes.ProgressBar => CreateProgressBar(widget),
+            Constants.ExternalWidgets.Button => _buttonsFactory.CreateButton(widget),
             Constants.ExternalWidgets.Label => _labelsFactory.CreateLabel(widget),
             Constants.ExternalWidgets.CheckButton => CreateCheckBox(widget),
             Constants.ExternalWidgets.ProgressBar => CreateProgressBar(widget),
@@ -79,7 +80,7 @@ public class ComponentsFactory
             switch (property.Name)
             {
                 default:
-                    _logger.LogWarning("Property {Property} is not supported", property.Name);
+                    _logger.LogWarning("{UIElement}'s property {Property} is not supported", nameof(CheckBox), property.Name);
                     break;
             }
         }

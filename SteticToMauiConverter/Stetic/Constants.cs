@@ -20,6 +20,7 @@ public static class Constants
 
     public static class ExternalWidgets
     {
+        public const string Button = "Gamma.GtkWidgets.yButton";
         public const string ProgressBar = "Gamma.GtkWidgets.yProgressBar";
         public const string Label = "Gamma.GtkWidgets.yLabel";
         public const string CheckButton = "Gamma.GtkWidgets.yCheckButton";

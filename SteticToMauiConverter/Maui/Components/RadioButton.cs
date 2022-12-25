@@ -7,5 +7,8 @@ public class RadioButton : UIComponent
     public string? GroupName { get; set; }
 
     [XmlAttribute]
+    public string? Content { get; set; }
+
+    [XmlAttribute]
     public bool IsChecked { get; set; }
 }

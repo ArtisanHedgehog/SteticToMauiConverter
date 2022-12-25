@@ -32,10 +32,6 @@ public class ButtonsFactory
                 case "Tooltip":
                     button.Tooltip = property.Value;
                     break;
-                case "UseUnderline": // Gtk uses it for enable mnemonic characters
-                case "MemberName": // Unused property
-                case "CanFocus": // Unused property
-                    break;
                 case "Type":
                     if (property.Value == "TextAndIcon" || property.Value == "TextOnly")
                     { }
@@ -47,8 +43,12 @@ public class ButtonsFactory
                 case "Icon":
                     _logger.LogWarning("Icons conversion is not implemented!");
                     break;
+                case "UseUnderline": // Gtk uses it for enable mnemonic characters
+                case "MemberName": // Unused property
+                case "CanFocus": // Unused property
+                    break;
                 default:
-                    _logger.LogWarning("Property {Property} is not supported", property.Name);
+                    _logger.LogWarning("{UIElement}'s property {Property} is not supported", nameof(Button), property.Name);
                     break;
             }
         }
@@ -90,13 +90,17 @@ public class ButtonsFactory
                 case "Group":
                     radioButton.GroupName = property.Value;
                     break;
+                case "Label":
+                    radioButton.Content = property.Value;
+                    break;
                 case "Active":
                     radioButton.IsChecked = true;
                     break;
+                case "UseUnderline": // Gtk uses it for enable mnemonic characters
                 case "CanFocus": // Unused property
                     break;
                 default:
-                    _logger.LogWarning("Property {Property} is not supported", property.Name);
+                    _logger.LogWarning("{UIElement}'s property {Property} is not supported", nameof(RadioButton), property.Name);
                     break;
             }
         }
