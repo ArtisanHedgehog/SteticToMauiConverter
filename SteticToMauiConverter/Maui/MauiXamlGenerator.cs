@@ -1,8 +1,8 @@
-﻿using SteticToMauiConverter.Maui.Components;
+﻿namespace SteticToMauiConverter.Maui;
+
+using SteticToMauiConverter.Maui.Components;
 using SteticToMauiConverter.Maui.Factories;
 using SteticToMauiConverter.Stetic;
-namespace SteticToMauiConverter.Maui;
-
 using System.Xml.Serialization;
 
 public class MauiXamlGenerator

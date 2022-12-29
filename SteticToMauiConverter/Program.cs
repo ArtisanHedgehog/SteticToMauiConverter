@@ -8,7 +8,7 @@ using SteticToMauiConverter.Maui;
 using SteticToMauiConverter.Maui.Factories;
 using SteticToMauiConverter.Stetic;
 
-var hostBuilder = new HostBuilder()
+using IHost host = Host.CreateDefaultBuilder(args)
     .ConfigureAppConfiguration((hostingContext, config) =>
     {
         config.AddJsonFile("appsettings.json");
@@ -28,10 +28,7 @@ var hostBuilder = new HostBuilder()
     .ConfigureLogging((hostContext, logging) =>
     {
         logging.AddConsole();
-    });
-
-var host = hostBuilder.Build();
-
+    }).Build();
 
 var logger = host.Services.GetService<ILogger<Program>>()
     ?? throw new InvalidOperationException("Can't get logger");
@@ -44,7 +41,7 @@ try
 
     app.Run();
 }
-catch(Exception ex)
+catch (Exception ex)
 {
     logger.LogCritical(ex.Message);
 }

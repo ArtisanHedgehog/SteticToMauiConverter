@@ -8,4 +8,7 @@ public class Label : UIComponent
 
     [XmlAttribute]
     public string HorizontalOptions { get; set; } = null!;
+
+    [XmlAttribute]
+    public string TextType { get; set; } = null!;
 }

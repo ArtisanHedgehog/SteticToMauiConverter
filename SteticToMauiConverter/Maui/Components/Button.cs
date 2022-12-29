@@ -11,4 +11,7 @@ public class Button : UIComponent
 
     [XmlAttribute("ToolTipProperties.Text")] //Maybe later need to be expanded to full class
     public string? Tooltip { get; set; } = null!;
+
+    [XmlAttribute]
+    public string? IsEnabled { get; set; }
 }

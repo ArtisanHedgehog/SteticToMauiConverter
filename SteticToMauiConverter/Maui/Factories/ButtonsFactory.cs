@@ -33,15 +33,16 @@ public class ButtonsFactory
                     button.Tooltip = property.Value;
                     break;
                 case "Type":
-                    if (property.Value == "TextAndIcon" || property.Value == "TextOnly")
-                    { }
-                    else
+                    if (property.Value != "TextAndIcon" && property.Value != "TextOnly")
                     {
                         _logger.LogWarning("Type {Type} is not supported", property.Value);
                     }
                     break;
                 case "Icon":
                     _logger.LogWarning("Icons conversion is not implemented!");
+                    break;
+                case "Sensitive":
+                    button.IsEnabled = property.Value;
                     break;
                 case "UseUnderline": // Gtk uses it for enable mnemonic characters
                 case "MemberName": // Unused property
@@ -66,7 +67,7 @@ public class ButtonsFactory
                     button.Clicked = signal.Handler;
                     break;
                 default:
-                    _logger.LogWarning("Signal {Signal} is not supported", signal.Name);
+                    _logger.LogWarning("{UIElement}'s Signal {Signal} is not supported", nameof(Button), signal.Name);
                     break;
             }
         }
@@ -115,7 +116,7 @@ public class ButtonsFactory
             switch (signal.Name)
             {
                 default:
-                    _logger.LogWarning("Signal {Signal} is not supported", signal.Name);
+                    _logger.LogWarning("{UIElement}'s Signal {Signal} is not supported", nameof(Button), signal.Name);
                     break;
             }
         }

@@ -29,6 +29,9 @@ public class LabelsFactory
                 case "LabelProp":
                     label.Text = property.Value ?? string.Empty;
                     break;
+                case "UseMarkup":
+                    label.TextType = "Html";
+                    break;
                 case "Xalign":
                     switch(property.Value)
                     {

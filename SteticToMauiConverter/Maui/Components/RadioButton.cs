@@ -1,6 +1,7 @@
-﻿using System.Xml.Serialization;
+﻿namespace SteticToMauiConverter.Maui.Components;
 
-namespace SteticToMauiConverter.Maui.Components;
+using System.Xml.Serialization;
+
 public class RadioButton : UIComponent
 {
     [XmlAttribute]

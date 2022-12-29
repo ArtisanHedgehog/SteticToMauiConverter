@@ -79,6 +79,8 @@ public class ComponentsFactory
         {
             switch (property.Name)
             {
+                case "MemberName": // Unused property
+                    break;
                 default:
                     _logger.LogWarning("{UIElement}'s property {Property} is not supported", nameof(CheckBox), property.Name);
                     break;
