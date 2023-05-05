@@ -1,4 +1,6 @@
-﻿using System.Xml.Serialization;
+﻿using SteticToMauiConverter.Maui.Components.Shells;
+using SteticToMauiConverter.Maui.Components.Tables;
+using System.Xml.Serialization;
 
 namespace SteticToMauiConverter.Maui.Components;
 public class UIContainer : UIComponent
@@ -13,5 +15,7 @@ public class UIContainer : UIComponent
     [XmlElement(typeof(CheckBox), ElementName = nameof(CheckBox))]
     [XmlElement(typeof(ProgressBar), ElementName = nameof(ProgressBar))]
     [XmlElement(typeof(Entry), ElementName = nameof(Entry))]
+    [XmlElement(typeof(TableView), ElementName = nameof(TableView))]
+    [XmlElement(typeof(Shell), ElementName = nameof(Shell))]
     public UIComponent[]? UIComponents { get; set; }
 }

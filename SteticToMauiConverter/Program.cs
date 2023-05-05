@@ -5,13 +5,16 @@ using Microsoft.Extensions.Logging;
 using SteticToMauiConverter;
 using SteticToMauiConverter.Configuration;
 using SteticToMauiConverter.Maui;
+using SteticToMauiConverter.Maui.Components.Shells;
+using SteticToMauiConverter.Maui.Components.Tables;
 using SteticToMauiConverter.Maui.Factories;
 using SteticToMauiConverter.Stetic;
 
 using IHost host = Host.CreateDefaultBuilder(args)
     .ConfigureAppConfiguration((hostingContext, config) =>
     {
-        config.AddJsonFile("appsettings.json");
+        config.AddJsonFile("appsettings.json", optional: false, reloadOnChange: true);
+        config.AddJsonFile($"appsettings.{Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") ?? "Production"}.json", optional: true, reloadOnChange: true);
     })
     .ConfigureServices((hostingContext, services) =>
     {
@@ -21,6 +24,9 @@ using IHost host = Host.CreateDefaultBuilder(args)
         services.AddSingleton<ButtonsFactory>();
         services.AddSingleton<LabelsFactory>();
         services.AddSingleton<ComponentsFactory>();
+        services.AddSingleton<ContainersFactory>();
+        services.AddSingleton<TableFactory>();
+        services.AddSingleton<ShellFactory>();
 
         services.Configure<ApplicationOptions>(
             hostingContext.Configuration.GetSection(nameof(ApplicationOptions)));
@@ -29,6 +35,8 @@ using IHost host = Host.CreateDefaultBuilder(args)
     {
         logging.AddConsole();
     }).Build();
+
+host.Start();
 
 var logger = host.Services.GetService<ILogger<Program>>()
     ?? throw new InvalidOperationException("Can't get logger");
@@ -43,5 +51,5 @@ try
 }
 catch (Exception ex)
 {
-    logger.LogCritical(ex.Message);
+    logger.LogCritical("Exception message: {Message}", ex.Message);
 }

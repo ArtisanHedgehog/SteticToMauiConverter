@@ -1,5 +1,4 @@
 ﻿namespace SteticToMauiConverter.Maui.Factories;
-
 using Microsoft.Extensions.Logging;
 using SteticToMauiConverter.Maui.Components;
 using SteticToMauiConverter.Stetic;
@@ -7,130 +6,92 @@ using SteticToMauiConverter.Stetic;
 public class ComponentsFactory
 {
     private readonly ILogger<ComponentsFactory> _logger;
-    private readonly ButtonsFactory _buttonsFactory;
-    private readonly LabelsFactory _labelsFactory;
 
     public ComponentsFactory(
-        ILogger<ComponentsFactory> logger,
-        ButtonsFactory buttonsFactory,
-        LabelsFactory labelsFactory)
+        ILogger<ComponentsFactory> logger)
     {
         _logger = logger;
-        _buttonsFactory = buttonsFactory;
-        _labelsFactory = labelsFactory;
+
     }
 
-    public UIComponent? CreateComponent(Widget widget)
-    {
-        return widget.Class switch
-        {
-            Constants.Classes.VBox => new VerticalStackLayout
-            {
-                UIComponents = CreateInnerComponents(widget)
-            },
-            Constants.Classes.HBox => new HorizontalStackLayout
-            {
-                UIComponents = CreateInnerComponents(widget)
-            },
-            Constants.Classes.Widget => new ContentView
-            {
-                Class = widget.Id ?? string.Empty,
-                UIComponents = CreateInnerComponents(widget)
-            },
-            Constants.Classes.ScrolledWindow => new ScrollView
-            {
-                Name = widget.Id ?? string.Empty,
-                UIComponents = CreateInnerComponents(widget)
-            },
-            Constants.Classes.Frame => new Frame
-            {
-                UIComponents = CreateInnerComponents(widget)
-            },
-            Constants.Classes.Button => _buttonsFactory.CreateButton(widget),
-            Constants.Classes.Label => _labelsFactory.CreateLabel(widget),
-            Constants.Classes.RadioButton => _buttonsFactory.CreateRadioButton(widget),
-            Constants.Classes.CheckButton => CreateCheckBox(widget),
-            Constants.Classes.ProgressBar => CreateProgressBar(widget),
-            Constants.ExternalWidgets.Button => _buttonsFactory.CreateButton(widget),
-            Constants.ExternalWidgets.Label => _labelsFactory.CreateLabel(widget),
-            Constants.ExternalWidgets.CheckButton => CreateCheckBox(widget),
-            Constants.ExternalWidgets.ProgressBar => CreateProgressBar(widget),
-            _ => null
-        };
-    }
-
-    private ProgressBar CreateProgressBar(Widget widget)
+    public ProgressBar CreateProgressBar(Widget widget)
     {
         var progressBar = new ProgressBar();
 
         return progressBar;
     }
 
-    private CheckBox CreateCheckBox(Widget widget)
+    public CheckBox CreateCheckBox(Widget widget)
     {
-        var checkBox = new CheckBox();
+        var result = new CheckBox();
 
-        if (widget.Properties is null)
+        if (widget.Properties is not null)
         {
-            return checkBox;
-        }
-
-        foreach (var property in widget.Properties)
-        {
-            switch (property.Name)
+            foreach (var property in widget.Properties)
             {
-                case "MemberName": // Unused property
-                    break;
-                default:
-                    _logger.LogWarning("{UIElement}'s property {Property} is not supported", nameof(CheckBox), property.Name);
-                    break;
+                switch (property.Name)
+                {
+                    case "CanFocus": // Unused
+                    case "MemberName": // Unused property
+                        break;
+                    default:
+                        _logger.LogWarning("{UIElement}'s property {Property} is not supported", result.GetType(), property.Name);
+                        break;
+                }
             }
         }
 
-        if (widget.Signals is null)
-        {
-            return checkBox;
-        }
 
-        foreach (var signal in widget.Signals)
+        if (widget.Signals is not null)
         {
-            switch (signal.Name)
+            foreach (var signal in widget.Signals)
             {
-                default:
-                    _logger.LogWarning("Signal {Signal} is not supported", signal.Name);
-                    break;
+                switch (signal.Name)
+                {
+                    default:
+                        _logger.LogWarning("Signal {Signal} is not supported", signal.Name);
+                        break;
+                }
             }
         }
 
-        return checkBox;
+        return result;
     }
 
-    public UIComponent[] CreateInnerComponents(Widget Widget)
+    public Entry CreateEntry(Widget widget)
     {
-        List<UIComponent> components = new();
+        var result = new Entry();
 
-        if (Widget.Childs is null)
+        if (widget.Properties is not null)
         {
-            return Array.Empty<UIComponent>();
-        }
-
-        foreach (var innerWidget in Widget.Childs.Select(wc => wc.Widget))
-        {
-            if (innerWidget is not null)
+            foreach (var property in widget.Properties)
             {
-                var newComponent = CreateComponent(innerWidget);
-
-                if (newComponent is not null)
+                switch (property.Name)
                 {
-                    components.Add(newComponent);
-                }
-                else
-                {
-                    _logger.LogWarning("Unknown UI element {Class}", innerWidget?.Class);
+                    case "CanFocus": // Unused
+                    case "MemberName": // Unused property
+                        break;
+                    default:
+                        _logger.LogWarning("{UIElement}'s property {Property} is not supported", result.GetType(), property.Name);
+                        break;
                 }
             }
         }
 
-        return components.ToArray();
+
+        if (widget.Signals is not null)
+        {
+            foreach (var signal in widget.Signals)
+            {
+                switch (signal.Name)
+                {
+                    default:
+                        _logger.LogWarning("Signal {Signal} is not supported", signal.Name);
+                        break;
+                }
+            }
+        }
+
+        return result;
     }
 }
